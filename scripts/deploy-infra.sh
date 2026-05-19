@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RG="rg-orderx-lab"
-LOC="eastus"
+LOC="westus"
 AKS="aks-orderx"
 COSMOS="cosmosorderx"
 APIM="apimorderx"
