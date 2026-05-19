@@ -16,7 +16,7 @@ echo "🚀 Creating Resource Group"
 az group create -n $RG -l $LOC
 
 echo "🚀 Creating AKS"
-az aks create -g $RG -n $AKS --node-count 1 --generate-ssh-keys
+az aks create -g $RG -n $AKS --node-count 1 --node-vm-size Standard_B2s --generate-ssh-keys
 
 echo "🚀 Creating CosmosDB"
 az cosmosdb create -g $RG -n $COSMOS --kind MongoDB
