@@ -1,8 +1,9 @@
 #!/bin/bash
 
-RG="rg-bankx-lab"
-AKS="aks-bankx"
-APIM="apimbankx"
+RG="rg-orderx-lab"
+AKS="aks-orderx"
+APIM="apimorderx"
+API_ID="orderx-api"
 
 echo "🔑 Connect AKS"
 az aks get-credentials -g $RG -n $AKS --overwrite-existing
@@ -11,7 +12,7 @@ echo "🌐 Install Ingress"
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
-helm install nginx ingress-nginx/ingress-nginx \
+helm upgrade --install nginx ingress-nginx/ingress-nginx \
   --set controller.service.type=LoadBalancer
 
 echo "⏳ Waiting for IP..."
@@ -29,3 +30,19 @@ az apim backend create \
   --backend-id aks-backend \
   --protocol http \
   --url http://$INGRESS_IP
+
+echo "📡 Creating API"
+az apim api create \
+  --resource-group $RG \
+  --service-name $APIM \
+  --api-id $API_ID \
+  --path orderx \
+  --display-name "OrderX API" \
+  --protocols http
+
+echo "🔥 Applying Policy"
+az apim api policy create \
+  --resource-group $RG \
+  --service-name $APIM \
+  --api-id $API_ID \
+  --xml-content @apim/cardops-policy.xml

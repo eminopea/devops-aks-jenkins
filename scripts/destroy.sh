@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RG="rg-bankx-lab"
+RG="rg-orderx-lab"
 LOCATION="eastus"
 
 echo "🧨 Deleting Resource Group"

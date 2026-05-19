@@ -1,0 +1,30 @@
+<policies>
+    <inbound>
+        <base />
+
+        <!-- ✅ Log debug -->
+        <set-variable name="originalPath" value="@(context.Request.OriginalUrl.Path)" />
+
+        <!-- 🔥 Remueve /orderx -->
+        <rewrite-uri template="@(context.Request.OriginalUrl.Path.Replace("/orderx",""))" />
+
+        <!-- ✅ Enviar al backend AKS -->
+        <set-backend-service backend-id="aks-backend" />
+
+        <!-- 🔥 Header opcional de debug -->
+        <set-header name="x-api-gateway" exists-action="override">
+        </set-header>
+    </inbound>
+
+    <backend>
+        <base />
+    </backend>
+
+    <outbound>
+        <base />
+    </outbound>
+
+    <on-error>
+        <base />
+    </on-error>
+</policies>
